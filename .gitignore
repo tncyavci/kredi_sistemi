@@ -1,0 +1,140 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Project specific
+data/
+logs/
+.pytest_cache/
+test_pdfs/
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+proposal/
+
+# Models and embeddings
+models/llm/
+models/embeddings/
+models/mistral/
+models/*.bin
+models/*.gguf
+models/*.pth
+models/*.pt
+models/*.safetensors
+models/mistral-7b-instruct-v0.2.Q4_K_M.gguf
+models/mistral-7b-instruct-v0.2.*.gguf
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Local development
+*.log
+local_settings.py
+
+# Environment files
+.env*
+!.env.example
+
+# Model files
+*.pkl
+*.h5
+*.pt
+*.fgguf
+*.gguf
+
+# Configuration files
+config/*.json
+config/*.yaml
+!config/*.example.json
+!config/*.example.yaml
+
+# Project specific directories
+kredi_rag_sistemi/__pycache__/
+kredi_rag_sistemi/.pytest_cache/
+kredi_rag_sistemi/logs/
+kredi_rag_sistemi/data/
+kredi_rag_sistemi/models/
+kredi_rag_sistemi/test_pdfs/
+kredi_rag_sistemi/utils/__pycache__/
+kredi_rag_sistemi/app/__pycache__/
+kredi_rag_sistemi/tests/__pycache__/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Additional project specific
+pdf/
+proposal/
+*.pyc
+*.pyo
+*.pyd
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.pot
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST

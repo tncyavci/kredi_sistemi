@@ -1,47 +1,49 @@
 import os
 import logging
 from typing import List, Dict
-import PyPDF2
-import pdfplumber
+from utils.preprocessing import EnhancedPdfProcessor
 
 logger = logging.getLogger(__name__)
 
 class PDFProcessor:
+    """
+    Gelişmiş PDF işleme özelliklerini kullanarak PDF dosyalarını işleyen sınıf.
+    Bu sınıf, EnhancedPdfProcessor sınıfı üzerine bir adaptör görevi görür.
+    """
     def __init__(self, pdf_dir: str):
         self.pdf_dir = pdf_dir
+        self.processor = EnhancedPdfProcessor(output_dir=os.path.join(pdf_dir, "../data/processed"))
 
     def extract_text_from_pdf(self, pdf_path: str) -> str:
         """PDF dosyasından metin çıkarır"""
-        text = ""
         try:
-            with pdfplumber.open(pdf_path) as pdf:
-                for page in pdf.pages:
-                    text += page.extract_text() + "\n"
+            # Önce PyMuPDF ile dene
+            text = self.processor.extract_text_with_pymupdf(pdf_path)
+            
+            # Eğer metin bulunamazsa pdfplumber dene
+            if not text.strip():
+                text = self.processor.extract_text_with_pdfplumber(pdf_path)
+                
+            # Hala metin yoksa OCR dene
+            if not text.strip():
+                text = self.processor.perform_ocr(pdf_path)
+                
+            return text
         except Exception as e:
             logger.error(f"PDF işlenirken hata oluştu: {pdf_path}, Hata: {str(e)}")
             raise
-        return text
 
     def process_pdfs(self) -> List[Dict]:
         """Tüm PDF'leri işler ve belge formatına dönüştürür"""
-        documents = []
-        for filename in os.listdir(self.pdf_dir):
-            if filename.endswith('.pdf'):
-                pdf_path = os.path.join(self.pdf_dir, filename)
-                try:
-                    text = self.extract_text_from_pdf(pdf_path)
-                    document = {
-                        "id": f"pdf_{os.path.splitext(filename)[0]}",
-                        "text": text,
-                        "metadata": {
-                            "category": "finansal_rapor",
-                            "kaynak": filename,
-                            "type": "pdf"
-                        }
-                    }
-                    documents.append(document)
-                    logger.info(f"PDF işlendi: {filename}")
-                except Exception as e:
-                    logger.error(f"PDF işlenemedi: {filename}, Hata: {str(e)}")
-                    continue
-        return documents 
+        try:
+            return self.processor.process_pdf_directory_to_documents(self.pdf_dir, category_mapping={
+                "mali": "mali_tablo",
+                "faaliyet": "faaliyet_raporu",
+                "fiyat": "fiyat_listesi",
+                "finansal": "finansal_bilgiler",
+                "kap": "finansal_bilgiler",
+                "pegasus": "finansal_bilgiler"
+            })
+        except Exception as e:
+            logger.error(f"PDF dizini işlenirken hata oluştu: {str(e)}")
+            return [] 

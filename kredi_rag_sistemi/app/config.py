@@ -4,7 +4,7 @@ RAG sistemi için konfigürasyon ayarları.
 
 # Model ayarları
 MODEL_CONFIG = {
-    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "llm_model": "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
     "llm_file": "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
     "llm_temperature": 0.7,

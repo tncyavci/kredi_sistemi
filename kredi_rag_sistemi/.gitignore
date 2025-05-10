@@ -1,0 +1,117 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Project specific
+logs/
+.pytest_cache/
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+
+# Models and embeddings
+models/llm/
+models/embeddings/
+models/mistral/
+models/*.bin
+models/*.gguf
+models/*.pth
+models/*.pt
+models/*.safetensors
+models/mistral-7b-instruct-v0.2.Q4_K_M.gguf
+models/mistral-7b-instruct-v0.2.*.gguf
+
+# Vector database files
+**/vector_db/
+**/vector_db.pkl
+**/chroma/
+**/faiss/
+
+# ChromaDB temporary files
+**/.chroma/
+**/chroma.sqlite3
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Local development
+*.log
+local_settings.py
+
+# Environment files
+.env*
+!.env.example
+
+# Model files
+*.pkl
+*.h5
+*.pt
+*.fgguf
+*.gguf
+
+# Configuration files
+config/*.json
+config/*.yaml
+!config/*.example.json
+!config/*.example.yaml
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Docker
+.dockerignore
+docker-volumes/
+
+# Security
+**/*.pem
+**/*.key
+**/secrets/
+
+# Test folders can be excluded, but we'll keep test_pdfs for examples
+# test_pdfs/
+
+# Specific data folders that should be excluded
+data/raw/
+data/processed/
+# But we'll keep the data folder structure
+!data/
+!data/raw/.gitkeep
+!data/processed/.gitkeep 

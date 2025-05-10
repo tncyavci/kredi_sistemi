@@ -42,7 +42,7 @@ class KrediRAG:
         vector_store: Optional[SecureVectorStore] = None,
         vector_db_path: str = None,
         model_path: str = None,
-        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
+        embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
         top_k: int = 3,
         chunk_size: int = 1000,
         chunk_overlap: int = 200,

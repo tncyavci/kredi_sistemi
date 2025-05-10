@@ -24,7 +24,7 @@ redis>=4.5.1
 redis-om>=0.1.1
 pymilvus>=2.3.0
 pinecone-client>=2.2.1
-chromadb>=0.4.13
+chromadb>=0.4.18
 langchain-community>=0.0.10
 cryptography>=41.0.0  # Güvenli şifreleme için
 # PDF işleme ve OCR

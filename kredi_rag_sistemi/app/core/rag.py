@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 # Bu satırları geliştirme ortamınıza göre ayarlayın
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
@@ -31,77 +32,53 @@ def set_global_rag_instance(instance):
 
 class KrediRAG:
     """
-    Kredi uygulamaları için Retrieval-Augmented Generation (RAG) sistemini sağlayan ana sınıf.
-    Bu sınıf, document embedder ve LLM bileşenlerini birleştirerek tam bir RAG iş akışı sunar.
+    Kredi RAG (Retrieval-Augmented Generation) Sistemi.
+    PDF dosyalarından çıkarılan bilgilerle soru-cevap yapabilen bir sistem.
     """
     
     def __init__(
         self,
-        llm: Optional[MistralLLM] = None,
-        embedder: Optional[DocumentEmbedder] = None,
-        vector_store: Optional[SecureVectorStore] = None,
-        vector_db_path: str = None,
-        model_path: str = None,
-        embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        model_path: str,
+        vector_db_path: str = "./data/vector_db",
         top_k: int = 3,
-        chunk_size: int = 1000,
-        chunk_overlap: int = 200,
-        vector_store_type: str = "chroma",  # 'chroma' veya 'faiss'
-        encryption_key: Optional[str] = None  # Şifreleme anahtarı
+        temperature: float = 0.1,
+        max_tokens: int = 1024,
+        force_recreate_db: bool = False
     ):
         """
-        KrediRAG sınıfının başlatıcısı.
+        KrediRAG sistemini başlatır.
         
         Args:
-            llm: Önceden oluşturulmuş MistralLLM örneği (opsiyonel)
-            embedder: Önceden oluşturulmuş DocumentEmbedder örneği (opsiyonel)
-            vector_store: Önceden oluşturulmuş SecureVectorStore örneği (opsiyonel)
-            vector_db_path: Vektör veritabanı dizini (yoksa oluşturulur)
-            model_path: Mistral model dosyasının yolu (llm verilmezse kullanılır)
-            embedding_model: Embedding model adı (embedder verilmezse kullanılır)
-            top_k: Aramalarda döndürülecek en alakalı belge sayısı
-            chunk_size: Belgenin bölüneceği maksimum uzunluk
-            chunk_overlap: İki bölüm arasındaki kesişim miktarı
-            vector_store_type: Kullanılacak vektör veritabanı tipi ('chroma' veya 'faiss')
-            encryption_key: Vektör veritabanı için opsiyonel şifreleme anahtarı
+            model_path: LLM model dosyasının yolu
+            vector_db_path: Vektör veritabanı dizini
+            top_k: Sorgu başına getirilecek en benzer belge sayısı
+            temperature: LLM çıktı sıcaklığı (0.0-1.0)
+            max_tokens: Maksimum çıktı token sayısı
+            force_recreate_db: Vektör DB'yi zorla yeniden oluştur (dikkat: tüm veriler silinir)
         """
-        # LLM başlatma
-        self.llm = llm or MistralLLM(model_path=model_path)
+        # Gerekli dizinleri oluştur
+        Path(vector_db_path).mkdir(parents=True, exist_ok=True)
         
-        # Embedder başlatma
-        self.embedder = embedder or DocumentEmbedder(
-            model_name=embedding_model,
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
+        # Vektör veritabanını başlat
+        from models.vector_store import SecureVectorStore
+        self.vector_store = SecureVectorStore(
+            persist_directory=vector_db_path,
+            collection_name="kredi_rag_documents",
+            embedding_function_name="sentence-transformers/all-MiniLM-L6-v2",
+            force_recreate=force_recreate_db
+        )
+        logger.info(f"Vektör veritabanı yüklendi: {vector_db_path}")
+        
+        # LLM modelini yükle
+        from models.llm import MistralLLM
+        self.llm = MistralLLM(
+            model_path=model_path,
+            temperature=temperature,
+            max_tokens=max_tokens
         )
         
         self.top_k = top_k
-        self.vector_db_path = vector_db_path
-
-        # Güvenli vektör deposunu başlat
-        if vector_store:
-            self.vector_store = vector_store
-        else:
-            if not vector_db_path:
-                # Varsayılan yol
-                base_dir = Path(__file__).parent.parent.parent
-                vector_db_path = str(base_dir / "data" / "vector_db")
-                
-            # Güvenli vektör veritabanını başlat
-            self.vector_store = SecureVectorStore(
-                persist_directory=vector_db_path,
-                collection_name="kredi_rag_documents",
-                embedding_function_name=embedding_model,
-                store_type=vector_store_type,
-                encryption_key=encryption_key
-            )
-            
-            # Mevcut vektör veritabanını yükle (varsa)
-            try:
-                self.vector_store.load()
-                logger.info(f"Vektör veritabanı yüklendi: {vector_db_path}")
-            except Exception as e:
-                logger.warning(f"Vektör veritabanı yüklenemedi (yeni oluşturulacak): {str(e)}")
+        logger.info(f"KrediRAG sistemi başlatıldı.")
         
         # Bu instance'ı global olarak ayarla (API ve UI için)
         set_global_rag_instance(self)
@@ -113,85 +90,114 @@ class KrediRAG:
         Args:
             documents: Metin ve metadata içeren belge listesi
         """
+        if not documents:
+            logger.warning("Eklenecek belge bulunamadı.")
+            return
+            
         logger.info(f"{len(documents)} belge vektör veritabanına ekleniyor...")
         
-        # Belgeler için embeddingler oluştur
-        processed_documents = []
+        # Belgeleri doğrudan vektör veritabanına ekle
+        # Embeddingler, SecureVectorStore tarafından otomatik olarak oluşturulacak
+        self.vector_store.add_documents(documents)
         
-        for doc in documents:
-            # Belge metnini alın
-            text = doc.get("text", "")
-            if not text:
-                continue
-                
-            # Belgeyi parçalara böl
-            chunks = self.embedder._chunk_text(text)
-            
-            # Her parça için bir belge oluştur
-            for i, chunk in enumerate(chunks):
-                chunk_id = f"{doc.get('id', 'doc')}_{i}"
-                
-                # Embedding oluştur
-                embedding = self.embedder.embed_text(chunk)
-                
-                # İşlenmiş belgeyi ekle
-                processed_documents.append({
-                    "id": chunk_id,
-                    "text": chunk,
-                    "embedding": embedding,
-                    "metadata": {
-                        **doc.get("metadata", {}),
-                        "chunk_index": i,
-                        "original_id": doc.get("id", "doc")
-                    }
-                })
-        
-        # Belgeleri güvenli vektör veritabanına ekle
-        self.vector_store.add_documents(processed_documents)
-        
-        # Vektör veritabanını kaydet
-        self.save_vector_db()
-        
-        logger.info(f"{len(processed_documents)} belge başarıyla eklendi.")
+        logger.info(f"{len(documents)} belge başarıyla eklendi.")
     
-    def query(self, query: str, system_prompt: Optional[str] = None, top_k: Optional[int] = None) -> Dict[str, Any]:
+    def query(self, query_text: str, top_k: Optional[int] = None) -> Dict[str, Any]:
         """
-        Kullanıcı sorgusunu işler ve yanıt oluşturur
+        Bir sorguyu yürüterek ilgili belgeleri alır ve yanıt oluşturur.
         
         Args:
-            query: Kullanıcı sorgusu
-            system_prompt: Sistem promptu (isteğe bağlı)
-            top_k: Döndürülecek belge sayısı (belirtilmezse self.top_k kullanılır)
+            query_text: Kullanıcı sorgusu
+            top_k: Alınacak en alakalı belge sayısı
             
         Returns:
-            Yanıt ve ilgili belgeler içeren sözlük
+            Yanıt ve ilgili bilgileri içeren sözlük
         """
-        # Kullanılacak top_k değerini belirle
-        actual_top_k = top_k if top_k is not None else self.top_k
+        start_time = time.time()
         
-        # Sorgu için embedding oluştur
-        query_embedding = self.embedder.embed_text(query)
+        # top_k için öncelik: parametre > instance değeri > varsayılan
+        _top_k = top_k if top_k is not None else self.top_k
         
-        # Benzer belgeleri ara
-        relevant_docs = self.vector_store.search(query_embedding, actual_top_k)
-        
-        # En alakalı belge metinlerini seç
-        context_texts = [doc["text"] for doc in relevant_docs]
-        
-        default_system_prompt = """
-        Sen kredi başvuruları, risk değerlendirmesi ve finansal ürünler konusunda uzman bir 
-        yapay zeka asistanısın. Bilgiyi açık ve anlaşılır bir şekilde ilet. Yalnızca verilen 
-        belgelerdeki bilgilere dayanarak cevap ver. Bilmediğin konularda tahmin yürütme.
-        """
-        
-        system_prompt = system_prompt or default_system_prompt
-        response = self.llm.generate_with_context(query, context_texts, system_prompt)
-        
-        return {
-            "query": query,
-            "response": response,
-            "relevant_documents": relevant_docs
-        }
+        try:
+            # 1. Vektör veritabanında ilgili belgeleri ara
+            retrieval_start = time.time()
+            
+            # Önce tablo içeren belgelerde ara
+            filter_tables = {"type": "table"}
+            table_docs = self.vector_store.query_documents(query_text, top_k=_top_k, filter_criteria=filter_tables)
+            
+            # Sonra normal metin belgelerinde ara
+            filter_text = {"type": "text_chunk"}
+            text_docs = self.vector_store.query_documents(query_text, top_k=_top_k, filter_criteria=filter_text)
+            
+            # Tabloların ve metin parçalarının sayısını gösteren log ekle
+            logger.info(f"Sorgu için bulunan tablolar: {len(table_docs)}, metin parçaları: {len(text_docs)}")
+            
+            # Tüm belgeleri birleştir (en fazla top_k)
+            all_docs = []
+            
+            # Önceliklendirilmiş tablo ağırlığı
+            table_docs_weight = min(int(_top_k * 0.7), len(table_docs))  # Toplamın %70'i kadar tablo
+            
+            # Önce tabloları ekle (genellikle daha önemli bilgileri içerirler)
+            for i, doc in enumerate(table_docs):
+                if i < table_docs_weight:
+                    doc["metadata"]["priority"] = "high"  # Yüksek öncelik işaretle
+                    all_docs.append(doc)
+                    
+            # Sonra metin belgelerini ekle
+            remaining_slots = _top_k - len(all_docs)
+            for i, doc in enumerate(text_docs):
+                if i < remaining_slots:
+                    all_docs.append(doc)
+                    
+            # top_k'ya göre kırp
+            retrieved_docs = all_docs[:_top_k]
+            retrieval_time = time.time() - retrieval_start
+            
+            # 2. Yanıt oluştur
+            generation_start = time.time()
+            
+            # Sistem promptu
+            system_prompt = """
+            Sen bir finansal ve bankacılık alanında uzmanlaşmış asistansın. 
+            Finansal tablolar, kredi bilgileri, mali raporlar ve şirket dokümanları hakkında yanıtlar vermelisin.
+            Yalnızca verilen belgelerdeki bilgilere dayanarak cevap ver. Bilmediğin konularda tahmin yürütme.
+            Tablolardaki bilgileri düzgün yorumla ve veri hücreleri arasındaki ilişkileri anlamaya çalış.
+            Sunduğun bilgilerin doğru olduğundan emin ol ve gerçekleri çarpıtma.
+            Eğer belgelerden soruya cevap veremiyorsan, "Bu soruya cevap verecek yeterli bilgi bulamadım" de.
+            
+            ÖNEMLİ: Türkçe soruları Türkçe olarak cevapla. İngilizce dökümanlarda bilgi bulsan bile cevabını Türkçe olarak ver.
+            Tablolardaki veri hücrelerinde bulunan sayıları ve değerleri doğru yorumla.
+            """
+            
+            # Doküman metinlerini al
+            context_texts = [doc["text"] for doc in retrieved_docs]
+            
+            # LLM ile yanıt oluştur
+            answer = self.llm.generate_with_context(query_text, context_texts, system_prompt)
+            generation_time = time.time() - generation_start
+            
+            # 3. Sonuç döndür
+            result = {
+                "answer": answer,
+                "source_documents": retrieved_docs,
+                "query": query_text,
+                "retrieval_time": retrieval_time,
+                "generation_time": generation_time,
+                "total_time": time.time() - start_time
+            }
+            
+            logger.info(f"Sorgu başarıyla tamamlandı. Toplam süre: {result['total_time']:.2f} saniye")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Sorgu işleme hatası: {str(e)}")
+            return {
+                "answer": f"Sorgu işlenirken bir hata oluştu: {str(e)}",
+                "error": str(e),
+                "total_time": time.time() - start_time
+            }
         
     def save_vector_db(self, filepath: Optional[str] = None) -> None:
         """

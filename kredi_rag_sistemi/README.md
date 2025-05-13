@@ -1,183 +1,78 @@
 # Kredi RAG Sistemi
 
-Bu proje, kredi başvuruları ve finansal belgeler için geliştirilmiş Retrieval-Augmented Generation (RAG) tabanlı bir bilgi erişim sistemidir. Sistem, PDF formatındaki finansal belgeleri işleyerek kullanıcıların Türkçe doğal dil sorguları ile belgelerdeki bilgilere kolayca erişmesini sağlar.
+Bu sistem, finans kurumları için kredi süreçlerini hızlandırmak amacıyla PDF dosyalarından bilgi çıkararak soru-cevap yapabilen bir RAG (Retrieval-Augmented Generation) sistemidir.
 
-## 🚀 Özellikler
+## Özellikler
 
-- PDF belgelerinden metin çıkarma ve işleme
-- Metin parçalama ve çok dilli vektör dönüşümü
-- ChromaDB veya FAISS ile güvenli ve hızlı vektör saklama
-- Yerel Mistral 7B modeli ile doğal dil yanıtları
-- Streamlit tabanlı kullanıcı dostu arayüz
-- FastAPI ile RESTful API desteği
-- Docker ile kolay dağıtım
-- Merkezi loglama ve izleme
-- Güvenli kimlik doğrulama ve API erişimi
+- **PDF İşleme**: Finansal belgeleri, sözleşmeleri ve formları işleyerek bilgi çıkarır
+- **OCR Desteği**: Taranan belgelerdeki metni tanıma
+- **Tablo Tanıma**: Finansal tablolardaki verileri yapılandırılmış biçimde çıkarma
+- **GPU Destekli İşleme**: Performanslı OCR ve belge işleme için GPU desteği
+- **Önbellekleme Sistemi**: İşlenmiş belgeleri önbellekleyerek tekrarlı işlemleri hızlandırma
+- **Çoklu Vektör Tabanı**: ChromaDB, Milvus veya Pinecone ile uyumluluk
+- **Lokal LLM Entegrasyonu**: Gizlilik gerektiren uygulamalar için lokal LLM desteği
 
-## 📋 Kurulum
+## Geliştirilmiş PDF İşleme Özellikleri
 
-### Gereksinimler
+- **GPU Destekli OCR**: EasyOCR ile GPU destekli, hızlı metin tanıma
+- **Önbellekleme Sistemi**: Daha önce işlenmiş PDF'leri yeniden işlemeden kullanma
+- **Daha Yüksek Doğruluk**: Çoklu OCR motorlarını birleştirerek daha doğru sonuçlar
+- **Büyük Dosya Desteği**: 500MB'a kadar büyük PDF'leri işleyebilme
+- **Tablo Çıkarım İyileştirmeleri**: Farklı tablo yapılarını daha iyi tanıyabilme
+- **Çoklu PDF Formatları**: Şifreli olmayan, taranmış ve melez PDF'leri destekleme
+- **Paralel İşleme**: Çoklu çekirdek ve threading ile hızlı işleme
+- **Performans İzleme**: İşleme zamanı ve kullanılan kaynakları izleme
 
-- Python 3.10 veya üzeri
-- Poppler (PDF işleme için)
-- Tesseract OCR (isteğe bağlı, OCR için)
-
-### 1. Bağımlılıkları Yükleme
+## Kurulum
 
 ```bash
-# Temel bağımlılıklar
+# Gerekli kütüphaneleri kur
 pip install -r requirements.txt
 
-# Geliştirme bağımlılıkları (opsiyonel)
-pip install -r requirements-dev.txt
+# Tesseract OCR kurulumu (OS'a göre değişir)
+# Ubuntu:
+sudo apt-get install tesseract-ocr
+# macOS:
+brew install tesseract
+
+# Tensorflow/PyTorch GPU desteği için ekstra adımlar gerekebilir
 ```
 
-### 2. Model İndirme
+## Kullanım
+
+1. PDF'leri işleme:
 
 ```bash
-# Mistral 7B modelini indir
-python -c "from models.llm import download_mistral_model; download_mistral_model()"
+python optimize_pdf_process.py --use_gpu --chunk_size 3000 --overlap 300
 ```
 
-## 🔧 Kullanım
-
-### Streamlit Uygulaması
-
-Etkileşimli web arayüzünü başlatmak için:
+2. RAG sorgulama:
 
 ```bash
-python run_streamlit.py
+python app/main.py
 ```
 
-Bu komut, `http://localhost:8501` adresinde Streamlit arayüzünü başlatacaktır.
-
-### API Servisi
-
-RESTful API'yi başlatmak için:
+3. API ve UI'yi başlatma:
 
 ```bash
-python run_api.py
+uvicorn app.api:app --reload
+streamlit run app/ui.py
 ```
 
-API, `http://localhost:8000` adresinde çalışmaya başlayacaktır. API dökümantasyonu `http://localhost:8000/docs` adresinde bulunabilir.
+## Performans İzleme ve Test
 
-### PDF İşleme
-
-PDF belgelerini komut satırından işlemek için:
+Projenin performansını test etmek için:
 
 ```bash
-python process_pdfs.py
+python -m pytest tests/test_pdf_processing_performance.py -v
 ```
 
-### Docker ile Çalıştırma
+Bu, farklı senaryolarda (CPU/GPU, önbellekli/önbelleksiz) performans karşılaştırması yaparak en iyi konfigürasyonu belirlemenize yardımcı olur.
 
-```bash
-# Tek servis
-docker build -t kredi-rag .
-docker run -p 8501:8501 kredi-rag
+## Lisans
 
-# veya Docker Compose ile tüm hizmetleri başlatma
-docker-compose up -d
-```
+MIT
 
-## 📁 Proje Yapısı
+## Katkıda Bulunanlar
 
-```
-kredi_rag_sistemi/
-├── app/                     # Uygulama kodları
-│   ├── api/                 # FastAPI uygulaması
-│   │   ├── app.py           # API başlatıcı
-│   │   └── router.py        # API rotaları
-│   ├── core/                # Temel işlevler
-│   │   ├── rag.py           # Ana RAG sınıfı
-│   │   └── pdf_processor.py # PDF işleme
-│   ├── services/            # Servis modülleri
-│   ├── streamlit_app.py     # Streamlit arayüzü
-│   ├── utils/               # Yardımcı fonksiyonlar
-│   │   └── rag_utils.py     # RAG yardımcıları
-│   ├── security.py          # Güvenlik ayarları
-│   └── config.py            # Konfigürasyon
-├── models/                  # Model tanımları
-│   ├── llm.py               # LLM entegrasyonu
-│   ├── embeddings.py        # Embedding modelleri
-│   └── vector_store.py      # Vektör depolama
-├── utils/                   # Genel yardımcılar
-│   └── logging_config.py    # Loglama ayarları
-├── tests/                   # Test dosyaları
-├── data/                    # Veri dosyaları
-│   ├── processed/           # İşlenmiş veriler
-│   └── raw/                 # Ham veriler
-├── logs/                    # Log dosyaları
-├── test_pdfs/               # Test PDF'leri
-├── docker-compose.yml       # Docker Compose
-├── Dockerfile               # Docker yapılandırması
-├── run_streamlit.py         # Streamlit başlatıcı
-├── run_api.py               # API başlatıcı
-├── process_pdfs.py          # PDF işleme betiği
-├── requirements.txt         # Bağımlılıklar
-├── requirements-dev.txt     # Geliştirme bağımlılıkları
-└── README.md                # Bu doküman
-```
-
-## ⚙️ Konfigürasyon
-
-Sistem ayarlarını `app/config.py` dosyasından özelleştirebilirsiniz:
-
-- Model ayarları (embedding modeli, LLM parametreleri)
-- PDF işleme ayarları (parça boyutu, örtüşme)
-- Vektör veritabanı ayarları (ChromaDB/FAISS)
-- Kategori eşleştirmeleri
-- Sistem promptu
-
-## 🔍 Vektör Veritabanı Seçimi
-
-Sistem iki farklı vektör veritabanını destekler:
-
-### ChromaDB
-- Kolay kullanım ve kurulum
-- Zengin metaveri desteği
-- Orta düzeyde belge koleksiyonları için ideal
-
-### FAISS (Facebook AI Similarity Search)
-- Yüksek performans
-- Büyük ölçekli veri setleri için optimize edilmiş
-- Gelişmiş arama yetenekleri
-
-`app/config.py` dosyasındaki `VECTOR_DB_CONFIG` ayarından seçiminizi yapabilirsiniz.
-
-## 🧪 Test
-
-Testleri çalıştırmak için:
-
-```bash
-# Tüm testler
-pytest
-
-# Spesifik test dosyası
-pytest tests/test_rag_system.py
-```
-
-## 🔒 Güvenlik
-
-- PDF dosya boyutu sınırlaması
-- Dosya uzantısı kontrolü
-- Güvenli vektör veritabanı saklama
-- API güvenliği için temel kimlik doğrulama
-- Opsiyonel veri şifreleme
-- `.env` dosyası ile hassas bilgilerin yönetimi
-
-## 🤝 Katkıda Bulunma
-
-1. Bu depoyu fork edin
-2. Yeni bir branch oluşturun (`git checkout -b feature/yeni-ozellik`)
-3. Değişikliklerinizi commit edin (`git commit -am 'Yeni özellik eklendi'`)
-4. Branch'inizi push edin (`git push origin feature/yeni-ozellik`)
-5. Pull Request oluşturun
-
-## 📄 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır.
-
-## 📬 İletişim
-
-Sorularınız için bu repo üzerinden iletişime geçebilirsiniz. 
+- Örnek Katkıcı 

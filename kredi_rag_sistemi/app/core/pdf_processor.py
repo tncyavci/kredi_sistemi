@@ -1,7 +1,7 @@
 import os
 import logging
 from typing import List, Dict
-from utils.preprocessing import EnhancedPdfProcessor
+from utils.preprocessing.enhanced_pdf_processor import EnhancedPdfProcessor
 
 logger = logging.getLogger(__name__)
 

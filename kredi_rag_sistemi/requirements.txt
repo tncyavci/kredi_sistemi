@@ -12,13 +12,13 @@ python-dotenv>=1.0.0
 pytest>=7.4.3
 streamlit>=1.28.0  # Opsiyonel, UI geliştirmek için
 loguru>=0.7.2  # Daha iyi loglama için
-PyPDF2==3.0.1
-pdfplumber==0.10.3
-PyMuPDF==1.23.8
-pandas==2.0.3
-transformers==4.30.2
-torch==2.0.1
-faiss-cpu==1.7.4
+PyPDF2>=3.0.1
+pdfplumber>=0.10.3
+PyMuPDF>=1.23.8
+pandas>=2.0.3
+transformers>=4.30.2
+torch>=2.0.1
+faiss-cpu>=1.7.4
 # Vektör veritabanı entegrasyonları
 redis>=4.5.1
 redis-om>=0.1.1
@@ -32,4 +32,7 @@ pytesseract>=0.3.10  # OCR için
 pdf2image>=1.16.3  # PDF'i görüntüye dönüştürmek için
 camelot-py>=0.11.0  # PDF tablo çıkarma
 opencv-python>=4.7.0  # Görüntü işleme
-tabula-py>=2.7.0  # PDF tablo çıkarma (Java tabanlı) 
+tabula-py>=2.7.0  # PDF tablo çıkarma (Java tabanlı)
+psutil>=5.9.0  # Sistem kaynak kullanımını izlemek için
+easyocr>=1.7.0  # GPU destekli OCR için
+# ... existing code ... 

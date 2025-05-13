@@ -7,7 +7,7 @@ def main():
     processor = PDFProcessor("data")
     
     # Tüm PDF'leri işle
-    results = processor.process_all_pdfs()
+    results = processor.process_pdfs()
     
     # Sonuçları JSON olarak kaydet
     output_dir = Path("data/processed")

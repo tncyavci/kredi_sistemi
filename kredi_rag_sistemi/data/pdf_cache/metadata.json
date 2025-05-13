@@ -1,0 +1,24 @@
+{
+  "items": {
+    "3ed70bb023bbf8895402763eae86d2532472c4678baaa6a682db5c6df880197b": {
+      "size": 183388,
+      "timestamp": 1747171682.0648801,
+      "last_access": 1747172692.607672,
+      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/test_pdfs/CCOLA_31.12.2024_EN.pdf"
+    },
+    "b3ef816efaacd788abb6845be3da7d1c65b37be2918b7e64f9f1801109e5bd7d": {
+      "size": 3327,
+      "timestamp": 1747172501.030619,
+      "last_access": 1747172501.030619,
+      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/test_pdfs/KAP - Pegasus Özel Finansal Bilgiler.pdf"
+    },
+    "b7dd3f1bb5b21611a3a6903699a68cebc6c41355953f31de757ab4bd26189d49": {
+      "size": 10890,
+      "timestamp": 1747174681.7885718,
+      "last_access": 1747176599.181171,
+      "pdf_path": "/Users/tuncayavci/genai_project/pdf/KAP - Pegasus Özel Finansal Bilgiler.pdf"
+    }
+  },
+  "total_size_bytes": 197605,
+  "last_cleanup": 1747176160.0707572
+}

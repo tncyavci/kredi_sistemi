@@ -11,6 +11,7 @@ Bu sistem, finans kurumları için kredi süreçlerini hızlandırmak amacıyla 
 - **Önbellekleme Sistemi**: İşlenmiş belgeleri önbellekleyerek tekrarlı işlemleri hızlandırma
 - **Çoklu Vektör Tabanı**: ChromaDB, Milvus veya Pinecone ile uyumluluk
 - **Lokal LLM Entegrasyonu**: Gizlilik gerektiren uygulamalar için lokal LLM desteği
+- **Türkçe Sorgu Desteği**: Türkçe finansal terimler ve sorgular için optimizasyon
 
 ## Geliştirilmiş PDF İşleme Özellikleri
 
@@ -22,6 +23,8 @@ Bu sistem, finans kurumları için kredi süreçlerini hızlandırmak amacıyla 
 - **Çoklu PDF Formatları**: Şifreli olmayan, taranmış ve melez PDF'leri destekleme
 - **Paralel İşleme**: Çoklu çekirdek ve threading ile hızlı işleme
 - **Performans İzleme**: İşleme zamanı ve kullanılan kaynakları izleme
+- **Yapılandırılmış Tablolar**: Tablolardaki veri hücreleri arasındaki ilişkileri daha iyi tanıma
+- **Veri Normalizasyonu**: Türkçe karakter ve metin normalizasyonu ile daha doğru sonuçlar
 
 ## Kurulum
 
@@ -31,11 +34,13 @@ pip install -r requirements.txt
 
 # Tesseract OCR kurulumu (OS'a göre değişir)
 # Ubuntu:
-sudo apt-get install tesseract-ocr
+sudo apt-get install tesseract-ocr tesseract-ocr-tur  # Türkçe dil paketi ekli
 # macOS:
-brew install tesseract
+brew install tesseract tesseract-lang  # Tüm diller
 
-# Tensorflow/PyTorch GPU desteği için ekstra adımlar gerekebilir
+# GPU desteği için
+pip install easyocr
+pip install nest_asyncio  # Streamlit için gerekli
 ```
 
 ## Kullanım
@@ -46,18 +51,35 @@ brew install tesseract
 python optimize_pdf_process.py --use_gpu --chunk_size 3000 --overlap 300
 ```
 
-2. RAG sorgulama:
+2. Web arayüzünü başlatma:
 
 ```bash
-python app/main.py
+streamlit run app/streamlit_app.py
 ```
 
-3. API ve UI'yi başlatma:
+3. API'yi başlatma:
 
 ```bash
 uvicorn app.api:app --reload
-streamlit run app/ui.py
 ```
+
+## Sorgu Örnekleri
+
+Sistem, Türkçe ve İngilizce PDF'leri hem Türkçe hem de İngilizce sorgularla yanıtlayabilir:
+
+- **Türkçe**: "2021 yılı için toplam aktifler ne kadardır?"
+- **Türkçe**: "Pegasus'un özel finansal bilgileri nelerdir?"
+- **Türkçe**: "Nakit akışı tablosunda en büyük gider kalemi nedir?"
+- **İngilizce**: "What is the total assets for 2021?"
+
+## Tablo Anlama Kapasitesi
+
+Sistem, tablolardaki bilgileri anlama konusunda özel olarak optimize edilmiştir:
+
+- Tablo yapılarını algılar ve içindeki ilişkileri anlar
+- Hücre değerlerini ve sütun başlıklarını doğru şekilde eşleştirir
+- Finansal terimleri ve sayıları anlamlandırabilir
+- Tablolar arası karşılaştırma yapabilir
 
 ## Performans İzleme ve Test
 
@@ -69,10 +91,17 @@ python -m pytest tests/test_pdf_processing_performance.py -v
 
 Bu, farklı senaryolarda (CPU/GPU, önbellekli/önbelleksiz) performans karşılaştırması yaparak en iyi konfigürasyonu belirlemenize yardımcı olur.
 
+## Sorun Giderme
+
+- **OCR Sorunları**: Tesseract veya EasyOCR yüklü değilse, metin çıkarma doğruluğu düşebilir
+- **GPU Sorunları**: GPU kullanırken hata alırsanız, `--use_gpu false` parametresiyle CPU modunda çalıştırın
+- **Türkçe Karakter Sorunları**: Türkçe karakter sorunu yaşarsanız, `LANG=tr_TR.UTF-8` ortam değişkenini ayarlayın
+
 ## Lisans
 
 MIT
 
 ## Katkıda Bulunanlar
 
-- Örnek Katkıcı 
+- Elvin Ertuğrul
+- Tuncay Avci 

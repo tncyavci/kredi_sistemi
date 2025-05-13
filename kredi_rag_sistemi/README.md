@@ -1,107 +1,107 @@
-# Kredi RAG Sistemi
+# Credit RAG System
 
-Bu sistem, finans kurumları için kredi süreçlerini hızlandırmak amacıyla PDF dosyalarından bilgi çıkararak soru-cevap yapabilen bir RAG (Retrieval-Augmented Generation) sistemidir.
+This system is a RAG (Retrieval-Augmented Generation) system that can extract information from PDF files and answer questions to accelerate credit processes for financial institutions.
 
-## Özellikler
+## Features
 
-- **PDF İşleme**: Finansal belgeleri, sözleşmeleri ve formları işleyerek bilgi çıkarır
-- **OCR Desteği**: Taranan belgelerdeki metni tanıma
-- **Tablo Tanıma**: Finansal tablolardaki verileri yapılandırılmış biçimde çıkarma
-- **GPU Destekli İşleme**: Performanslı OCR ve belge işleme için GPU desteği
-- **Önbellekleme Sistemi**: İşlenmiş belgeleri önbellekleyerek tekrarlı işlemleri hızlandırma
-- **Çoklu Vektör Tabanı**: ChromaDB, Milvus veya Pinecone ile uyumluluk
-- **Lokal LLM Entegrasyonu**: Gizlilik gerektiren uygulamalar için lokal LLM desteği
-- **Türkçe Sorgu Desteği**: Türkçe finansal terimler ve sorgular için optimizasyon
+- **PDF Processing**: Extracts information from financial documents, contracts, and forms
+- **OCR Support**: Text recognition in scanned documents
+- **Table Recognition**: Structured extraction of data from financial tables
+- **GPU-Powered Processing**: GPU support for high-performance OCR and document processing
+- **Caching System**: Speeds up repetitive operations by caching processed documents
+- **Multiple Vector Database Support**: Compatibility with ChromaDB, Milvus, or Pinecone
+- **Local LLM Integration**: Local LLM support for applications requiring privacy
+- **Turkish Query Support**: Optimization for Turkish financial terms and queries
 
-## Geliştirilmiş PDF İşleme Özellikleri
+## Enhanced PDF Processing Features
 
-- **GPU Destekli OCR**: EasyOCR ile GPU destekli, hızlı metin tanıma
-- **Önbellekleme Sistemi**: Daha önce işlenmiş PDF'leri yeniden işlemeden kullanma
-- **Daha Yüksek Doğruluk**: Çoklu OCR motorlarını birleştirerek daha doğru sonuçlar
-- **Büyük Dosya Desteği**: 500MB'a kadar büyük PDF'leri işleyebilme
-- **Tablo Çıkarım İyileştirmeleri**: Farklı tablo yapılarını daha iyi tanıyabilme
-- **Çoklu PDF Formatları**: Şifreli olmayan, taranmış ve melez PDF'leri destekleme
-- **Paralel İşleme**: Çoklu çekirdek ve threading ile hızlı işleme
-- **Performans İzleme**: İşleme zamanı ve kullanılan kaynakları izleme
-- **Yapılandırılmış Tablolar**: Tablolardaki veri hücreleri arasındaki ilişkileri daha iyi tanıma
-- **Veri Normalizasyonu**: Türkçe karakter ve metin normalizasyonu ile daha doğru sonuçlar
+- **GPU-Powered OCR**: Fast text recognition with EasyOCR with GPU support
+- **Caching System**: Reuse previously processed PDFs without reprocessing
+- **Higher Accuracy**: More accurate results by combining multiple OCR engines
+- **Large File Support**: Ability to process large PDFs up to 500MB
+- **Table Extraction Improvements**: Better recognition of different table structures
+- **Multiple PDF Formats**: Support for unencrypted, scanned, and hybrid PDFs
+- **Parallel Processing**: Fast processing with multi-core and threading
+- **Performance Monitoring**: Monitoring processing time and resources used
+- **Structured Tables**: Better recognition of relationships between data cells in tables
+- **Data Normalization**: More accurate results with Turkish character and text normalization
 
-## Kurulum
+## Installation
 
 ```bash
-# Gerekli kütüphaneleri kur
+# Install required libraries
 pip install -r requirements.txt
 
-# Tesseract OCR kurulumu (OS'a göre değişir)
+# Tesseract OCR installation (varies by OS)
 # Ubuntu:
-sudo apt-get install tesseract-ocr tesseract-ocr-tur  # Türkçe dil paketi ekli
+sudo apt-get install tesseract-ocr tesseract-ocr-tur  # Turkish language pack included
 # macOS:
-brew install tesseract tesseract-lang  # Tüm diller
+brew install tesseract tesseract-lang  # All languages
 
-# GPU desteği için
+# For GPU support
 pip install easyocr
-pip install nest_asyncio  # Streamlit için gerekli
+pip install nest_asyncio  # Required for Streamlit
 ```
 
-## Kullanım
+## Usage
 
-1. PDF'leri işleme:
+1. Processing PDFs:
 
 ```bash
 python optimize_pdf_process.py --use_gpu --chunk_size 3000 --overlap 300
 ```
 
-2. Web arayüzünü başlatma:
+2. Starting the web interface:
 
 ```bash
 streamlit run app/streamlit_app.py
 ```
 
-3. API'yi başlatma:
+3. Starting the API:
 
 ```bash
 uvicorn app.api:app --reload
 ```
 
-## Sorgu Örnekleri
+## Query Examples
 
-Sistem, Türkçe ve İngilizce PDF'leri hem Türkçe hem de İngilizce sorgularla yanıtlayabilir:
+The system can respond to both Turkish and English PDFs with queries in both Turkish and English:
 
-- **Türkçe**: "2021 yılı için toplam aktifler ne kadardır?"
-- **Türkçe**: "Pegasus'un özel finansal bilgileri nelerdir?"
-- **Türkçe**: "Nakit akışı tablosunda en büyük gider kalemi nedir?"
-- **İngilizce**: "What is the total assets for 2021?"
+- **Turkish**: "2021 yılı için toplam aktifler ne kadardır?"
+- **Turkish**: "Pegasus'un özel finansal bilgileri nelerdir?"
+- **Turkish**: "Nakit akışı tablosunda en büyük gider kalemi nedir?"
+- **English**: "What is the total assets for 2021?"
 
-## Tablo Anlama Kapasitesi
+## Table Understanding Capability
 
-Sistem, tablolardaki bilgileri anlama konusunda özel olarak optimize edilmiştir:
+The system is specially optimized for understanding information in tables:
 
-- Tablo yapılarını algılar ve içindeki ilişkileri anlar
-- Hücre değerlerini ve sütun başlıklarını doğru şekilde eşleştirir
-- Finansal terimleri ve sayıları anlamlandırabilir
-- Tablolar arası karşılaştırma yapabilir
+- Detects table structures and understands relationships within
+- Correctly matches cell values and column headers
+- Can interpret financial terms and numbers
+- Can compare between tables
 
-## Performans İzleme ve Test
+## Performance Monitoring and Testing
 
-Projenin performansını test etmek için:
+To test the performance of the project:
 
 ```bash
 python -m pytest tests/test_pdf_processing_performance.py -v
 ```
 
-Bu, farklı senaryolarda (CPU/GPU, önbellekli/önbelleksiz) performans karşılaştırması yaparak en iyi konfigürasyonu belirlemenize yardımcı olur.
+This helps determine the best configuration by comparing performance in different scenarios (CPU/GPU, cached/uncached).
 
-## Sorun Giderme
+## Troubleshooting
 
-- **OCR Sorunları**: Tesseract veya EasyOCR yüklü değilse, metin çıkarma doğruluğu düşebilir
-- **GPU Sorunları**: GPU kullanırken hata alırsanız, `--use_gpu false` parametresiyle CPU modunda çalıştırın
-- **Türkçe Karakter Sorunları**: Türkçe karakter sorunu yaşarsanız, `LANG=tr_TR.UTF-8` ortam değişkenini ayarlayın
+- **OCR Issues**: Text extraction accuracy may decrease if Tesseract or EasyOCR is not installed
+- **GPU Issues**: If you encounter errors when using GPU, run in CPU mode with `--use_gpu false` parameter
+- **Turkish Character Issues**: If you experience Turkish character issues, set the `LANG=tr_TR.UTF-8` environment variable
 
-## Lisans
+## License
 
 MIT
 
-## Katkıda Bulunanlar
+## Contributors
 
 - Elvin Ertuğrul
 - Tuncay Avci 

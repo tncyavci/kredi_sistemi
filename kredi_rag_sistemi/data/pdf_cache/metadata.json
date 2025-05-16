@@ -15,10 +15,40 @@
     "b7dd3f1bb5b21611a3a6903699a68cebc6c41355953f31de757ab4bd26189d49": {
       "size": 10890,
       "timestamp": 1747174681.7885718,
-      "last_access": 1747176599.181171,
+      "last_access": 1747386172.554124,
       "pdf_path": "/Users/tuncayavci/genai_project/pdf/KAP - Pegasus Özel Finansal Bilgiler.pdf"
+    },
+    "def308e58be3b91b03d6d9c55c0c3a8660b3d93b08dd62c6aeed580861ee1e04": {
+      "size": 780526,
+      "timestamp": 1747386129.458591,
+      "last_access": 1747386129.458592,
+      "pdf_path": "/Users/tuncayavci/genai_project/pdf/Adel Kalemcilik 2024 Faaliyet Raporu--PDF2.pdf 22-06-46-200.pdf"
+    },
+    "86b81fded056980be5ffa7687a574e31db390817188b918b2a71f10a4a4295cc": {
+      "size": 556581,
+      "timestamp": 1747386147.382346,
+      "last_access": 1747386147.382346,
+      "pdf_path": "/Users/tuncayavci/genai_project/pdf/Adel Mali Tablo ve Dipnotlar 31.12.2024---pdf3.pdf 22-06-44-278.pdf"
+    },
+    "0ceb12d554231e365cb01b7c6614e33c1d2b5a6a0c6a1f9843fb67ab088a1fd4": {
+      "size": 215813,
+      "timestamp": 1747386172.52351,
+      "last_access": 1747386172.52351,
+      "pdf_path": "/Users/tuncayavci/genai_project/pdf/CCOLA_31.12.2024_EN.pdf"
+    },
+    "1b0112c33410c1248eea1da37263ecc38cfa05b079e133cebaad2299bf2a811a": {
+      "size": 215813,
+      "timestamp": 1747386529.417679,
+      "last_access": 1747386671.2222831,
+      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/test_pdfs/CCOLA_31.12.2024_EN.pdf"
+    },
+    "0628ce99e1c4a35f917e13c63e2fd637cec8c7040d73954f645d37715cc94a8b": {
+      "size": 10891,
+      "timestamp": 1747386531.07503,
+      "last_access": 1747386671.550288,
+      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/test_pdfs/KAP - Pegasus Özel Finansal Bilgiler.pdf"
     }
   },
-  "total_size_bytes": 197605,
-  "last_cleanup": 1747176160.0707572
+  "total_size_bytes": 1977229,
+  "last_cleanup": 1747386097.244073
 }

@@ -36,6 +36,8 @@ import cv2
 # GPU kontrolü için
 import torch
 
+from .text_stream_processor import TextStreamProcessor
+
 logger = logging.getLogger(__name__)
 
 # Bellek izleme ve temizleme için yardımcı fonksiyonlar

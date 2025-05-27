@@ -1,38 +1,46 @@
-llama-cpp-python>=0.2.38
-huggingface_hub>=0.20.2
-langchain>=0.1.4
-sentence-transformers>=2.2.2
-numpy>=1.24.3
-scikit-learn>=1.3.0
-tqdm>=4.65.0
-fastapi>=0.104.1
-uvicorn>=0.24.0
-pydantic>=2.4.2
+# Kredi RAG Sistemi - CPU Optimized Requirements
+# Gereksiz paketler temizlendi, sadece gerekli olanlar bırakıldı
+
+# Core dependencies
+streamlit>=1.28.0
 python-dotenv>=1.0.0
-pytest>=7.4.3
-streamlit>=1.28.0  # Opsiyonel, UI geliştirmek için
-loguru>=0.7.2  # Daha iyi loglama için
+psutil>=5.9.0
+
+# LLM and embeddings - CPU optimized
+llama-cpp-python>=0.2.38
+sentence-transformers>=2.2.2
+huggingface-hub>=0.20.2
+transformers>=4.30.2
+
+# Vector database - CPU only
+faiss-cpu>=1.7.4
+chromadb>=0.4.18
+
+# PDF processing - essential only
 PyPDF2>=3.0.1
 pdfplumber>=0.10.3
 PyMuPDF>=1.23.8
+
+# Text processing
+langchain>=0.1.4
+tiktoken>=0.5.0
+
+# Data processing
 pandas>=2.0.3
-transformers>=4.30.2
-torch>=2.0.1
-faiss-cpu>=1.7.4
-# Vektör veritabanı entegrasyonları
-redis>=4.5.1
-redis-om>=0.1.1
-pymilvus>=2.3.0
-pinecone-client>=2.2.1
-chromadb>=0.4.18
-langchain-community>=0.0.10
-cryptography>=41.0.0  # Güvenli şifreleme için
-# PDF işleme ve OCR
-pytesseract>=0.3.10  # OCR için
-pdf2image>=1.16.3  # PDF'i görüntüye dönüştürmek için
-camelot-py>=0.11.0  # PDF tablo çıkarma
-opencv-python>=4.7.0  # Görüntü işleme
-tabula-py>=2.7.0  # PDF tablo çıkarma (Java tabanlı)
-psutil>=5.9.0  # Sistem kaynak kullanımını izlemek için
-easyocr>=1.7.0  # GPU destekli OCR için
-# ... existing code ... 
+numpy>=1.24.3
+
+# Web framework
+fastapi>=0.104.1
+uvicorn>=0.24.0
+
+# Utilities
+requests>=2.31.0
+tqdm>=4.65.0
+python-multipart>=0.0.6
+
+# Development
+pytest>=7.4.3
+
+# Note: GPU bağımlılıkları kaldırıldı (torch, easyocr, opencv-python)
+# Note: Kullanılmayan vektör DB'ler kaldırıldı (redis, pymilvus, pinecone)
+# Note: OCR paketleri kaldırıldı (pytesseract, pdf2image, camelot-py, tabula-py) 

@@ -1,0 +1,85 @@
+# Google Colab Pro Plus için optimize edilmiş gereksinimler
+# Pro Plus aboneliği ile GPU acceleration ve daha yüksek performans
+
+# Core AI/ML libraries (GPU optimized versions)
+llama-cpp-python[cublas]>=0.2.38  # GPU acceleration için
+huggingface_hub>=0.20.2
+langchain>=0.1.4
+sentence-transformers>=2.2.2
+scikit-learn>=1.3.0
+tqdm>=4.65.0
+
+# Web framework 
+streamlit>=1.28.0
+fastapi>=0.104.1
+uvicorn>=0.24.0
+pydantic>=2.4.2
+
+# Utilities
+python-dotenv>=1.0.0
+loguru>=0.7.2
+
+# PDF processing (enhanced versions)
+PyPDF2>=3.0.1
+pdfplumber>=0.10.3
+PyMuPDF>=1.23.8
+pytesseract>=0.3.10
+pdf2image>=1.16.3
+camelot-py[cv]>=0.11.0  # Computer vision support
+tabula-py>=2.7.0
+easyocr>=1.7.0
+Pillow>=9.5.0
+opencv-python>=4.7.0
+
+# Vector databases (GPU optimized)
+faiss-gpu>=1.7.4  # GPU accelerated FAISS
+chromadb>=0.4.18
+langchain-community>=0.0.10
+
+# Database connections
+redis>=4.5.1
+pymilvus>=2.3.0
+pinecone-client>=2.2.1
+
+# Security
+cryptography>=41.0.0
+
+# System monitoring and optimization
+psutil>=5.9.0
+memory-profiler>=0.61.0  # Memory profiling
+py-spy>=0.3.14  # Performance profiling
+
+# Machine Learning enhancement
+torch>=2.0.1  # GPU PyTorch
+torchvision>=0.15.0
+transformers[torch]>=4.30.2
+accelerate>=0.20.0  # Model acceleration
+optimum>=1.9.0  # Model optimization
+
+# Text processing enhancement
+spacy>=3.6.0
+nltk>=3.8.1
+textstat>=0.7.3  # Text analysis
+
+# Data processing
+pandas>=2.0.3
+numpy>=1.24.3
+scipy>=1.11.0
+
+# Visualization (for performance monitoring)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Colab specific
+pyngrok>=5.1.0  # Tunnel için
+google-colab  # Colab utilities
+ipywidgets>=8.0.0  # Interactive widgets
+
+# Performance optimization
+numba>=0.57.0  # JIT compilation
+cython>=0.29.0  # C extensions
+
+# Optional: Advanced OCR
+paddleocr>=2.7.0  # Advanced OCR engine
+# tesseract>=0.1.3  # Alternative OCR 

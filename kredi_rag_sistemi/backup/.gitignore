@@ -118,16 +118,3 @@ data/processed/
 !data/
 !data/raw/.gitkeep
 !data/processed/.gitkeep 
-# New structure specific ignores
-/models/*.gguf
-/models/*.bin
-/data/vector_db/
-/data/cache/
-/data/temp/
-.env
-__pycache__/
-*.pyc
-.pytest_cache/
-.coverage
-htmlcov/
-.DS_Store

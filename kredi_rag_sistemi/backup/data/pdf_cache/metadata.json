@@ -71,50 +71,8 @@
       "timestamp": 1748445915.452478,
       "last_access": 1748445915.452478,
       "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "fec233cf015af4f4e7bfee3a6047f05297f47c0f12c0a8b56c58419ac51bf271": {
-      "size": 11859,
-      "timestamp": 1748448814.091222,
-      "last_access": 1748448814.091222,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "b72c517956f41f56691e6e570fce916378257fb67d140e87ecfd66c1bf3ab387": {
-      "size": 11863,
-      "timestamp": 1748452494.240105,
-      "last_access": 1748452494.240105,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "81d51471f5799bb6a2e57760be0440cfbdb9253a47628acd3500c8106a62666c": {
-      "size": 11861,
-      "timestamp": 1748452592.309218,
-      "last_access": 1748452592.309218,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "32397f67480758219c4c036b4925336c7d47038b4046c2c83c7038d76eec434a": {
-      "size": 11862,
-      "timestamp": 1748453375.345174,
-      "last_access": 1748453375.345174,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "5e0769d6747237342e8d4cce1c492cd3685c373baaf5b73e3122c80136c480da": {
-      "size": 11861,
-      "timestamp": 1748453518.588567,
-      "last_access": 1748453518.588567,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "87a9981441b85a79d17761066d397ed6224ae657200e1d9893baf45d5b981f02": {
-      "size": 11859,
-      "timestamp": 1748453629.686757,
-      "last_access": 1748453629.686757,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
-    },
-    "817f7e30aff91d076fd00ce2af23d51a4fde5b7c24c1b36bb1e5979c0f557c89": {
-      "size": 11857,
-      "timestamp": 1748453903.523225,
-      "last_access": 1748453903.523226,
-      "pdf_path": "/Users/tuncayavci/genai_project/kredi_rag_sistemi/temp_uploads/KAP - Pegasus Özel Finansal Bilgiler.pdf"
     }
   },
-  "total_size_bytes": 1428039,
-  "last_cleanup": 1748452490.2208178
+  "total_size_bytes": 1345017,
+  "last_cleanup": 1748445911.2300942
 }
